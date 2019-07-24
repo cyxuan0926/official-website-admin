@@ -1,0 +1,143 @@
+#app {
+  // elememt-ui
+  .el-header {
+    padding: 0;
+  }
+
+  .el-aside {
+    height: calc(100vh - 50px);
+
+    .el-menu {
+      height: 100%;
+    }
+  }
+
+  .el-main {
+    overflow-y: auto;
+    height: calc(100vh - 50px);
+  }
+
+  .el-menu-item,
+  .el-submenu__title {
+    height: 46px;
+    line-height: 46px;
+
+    &:hover,
+    &.is-active {
+      background: #1d262a !important;
+    }
+  }
+
+  .layout-aside > .el-menu-item.is-active,
+  .el-submenu.is-active .el-submenu__title {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      content: '';
+      background: #3c8dbc;
+    }
+  }
+
+  .el-submenu .el-menu {
+    > .el-menu-item {
+      padding-left: 49px !important;
+    }
+  }
+
+  .el-radio {
+    margin-right: 20px;
+  }
+
+  // quill富文本编辑器
+  .ql-toolbar {
+    display: flex;
+    align-items: center;
+    line-height: 1.8;
+  }
+
+  .ql-container {
+    height: 300px;
+
+    + div {
+      height: 0;
+    }
+  }
+}
+
+#quillPreview {
+  .main {
+    padding-top: 78px;
+  }
+  h2 {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 30px;
+  }
+  .article-info {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 42px;
+    margin-top: 30px;
+    border-bottom: 1px solid #ccc;
+    font-size: 18px;
+    color: #999;
+  }
+  .article-info dl {
+    display: -webkit-box;
+    display: flex;
+    margin-right: 30px;
+  }
+  .article-info .operate {
+    -webkit-box-flex: 1;
+    flex: 1;
+    text-align: right;
+  }
+  .article-info .operate span {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  .article-info .operate span:first-child {
+    cursor: default;
+    margin-left: 8px;
+  }
+  .article-info .operate span:last-child {
+    margin-right: 8px;
+  }
+  .article-info .operate span.active {
+    font-weight: bold;
+    color: #333;
+  }
+  .article-content {
+    padding: 50px 0 60px;
+  }
+  .article-nav {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding-top: 26px;
+    margin-bottom: 130px;
+    border-top: 1px solid #ccc;
+    font-size: 18px;
+  }
+  .article-nav .nav-item {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .article-nav .nav-item a:hover {
+    color: #005dac;
+  }
+  .article-nav .nav-item a.disabled {
+    cursor: default;
+    color: #333;
+  }
+}
