@@ -3,7 +3,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    this.$store.dispatch("article/getArticleTypes");
+  }
+};
 </script>
-
-<style lang="scss" scoped></style>

@@ -13,7 +13,6 @@
 </template>
 
 <script>
-// import Cookies from "js-cookie";
 import Quill from "Quill";
 import ImageResize from "quill-image-resize-module";
 import { uploadFile, deleteFile } from "@/services/api/files";
@@ -64,10 +63,18 @@ export default {
   data() {
     return {
       quill: {}, // Quill 实例
-      filesUploaded: [] // 上传成功的文件列表
-      // egg.js 需要设置 "x-csrf-token" 请求头进行身份验证
-      // headers: { "x-csrf-token": Cookies.get("csrfToken") }
+      content: "",
+      contentObj: {}
+      // filesUploaded: [] // 上传成功的文件列表
     };
+  },
+  watch: {
+    value(val) {
+      if (val !== this.content) {
+        this.content = val;
+        this.$refs.editor.children[0].innerHTML = val;
+      }
+    }
   },
   mounted() {
     this.initQuill();
@@ -76,21 +83,30 @@ export default {
     this.quill = null;
   },
   methods: {
+    resolveImages(ops) {
+      if (!(ops instanceof Array)) return [];
+
+      const images = [];
+
+      ops.forEach(item => {
+        item.insert.image && images.push(item.insert.image);
+      });
+
+      return images;
+    },
     initQuill() {
       this.quill = new Quill(this.$refs.editor, this.options);
-      this.quill.setContents(this.value);
+      this.contentObj = this.quill.getContents();
       this.bindEvent();
       this.rewriteHandler();
     },
     bindEvent() {
-      this.quill.on("text-change", (delta, oldDelta, test) => {
-        console.log("text-change", delta, oldDelta, test);
+      this.quill.on("text-change", () => {
         const html = this.$refs.editor.children[0].innerHTML;
-        const content = this.quill.getLength() === 1 ? "" : html;
-
-        this.deleteUnusedImages();
-        this.$emit("input", content);
-        // this.$emit("input", this.quill.getContents());
+        this.content = this.quill.getLength() === 1 ? "" : html;
+        this.deleteUnusedImages(this.quill.getContents(), this.contentObj);
+        this.contentObj = this.quill.getContents();
+        this.$emit("input", this.content);
       });
     },
     // 自定义 handler
@@ -103,7 +119,6 @@ export default {
       });
     },
     async onUpload(form) {
-      console.log("onupload", form);
       const res = await uploadFile(form.file);
       setTimeout(() => {
         const file = this.$refs.upload.getFile(form.file);
@@ -113,44 +128,59 @@ export default {
         this.quill.insertEmbed(
           this.quill.getLength(),
           "image",
-          res.data.filepath
+          res.data.file_path
         );
 
-        this.filesUploaded.push(file);
+        // this.filesUploaded.push(file);
       }, 0);
     },
-    // 删除富文本中未使用到的图片
-    async deleteUnusedImages() {
-      const imagesUsed = this.resolveFileUrls("image");
-      const imagesUnused = [];
-      const filesUploaded = this.filesUploaded;
-
-      // 找出未使用的文件
-      filesUploaded.forEach(file => {
-        if (!imagesUsed.includes(file.response.filepath)) {
-          imagesUnused.push(file.response);
+    async deleteUnusedImages(content, oldContent) {
+      const images = this.resolveImages(content.ops);
+      const oldImages = this.resolveImages(oldContent.ops);
+      console.log("deleteUnuse change", content, oldContent, images, oldImages);
+      oldImages.forEach(async imagePath => {
+        if (!images.includes(imagePath)) {
+          console.log(imagePath);
+          await deleteFile(imagePath);
         }
       });
-
-      // 删除未使用文件
-      if (imagesUnused.length > 0) {
-        console.log("deleteUnusedImages", imagesUsed, imagesUnused);
-        try {
-          await deleteFile(imagesUnused);
-
-          // 去掉已删除的文件
-          imagesUnused.forEach(el => {
-            const index = filesUploaded.findIndex(
-              file => file.response.filepath === el.filepath
-            );
-
-            index > -1 && filesUploaded.splice(index, 1);
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      }
     },
+    clearData() {
+      this.content = "";
+      this.contentObj = {};
+      this.quill.setText("");
+    }
+    // 删除富文本中未使用到的图片
+    // async deleteUnusedImages() {
+    //   const imagesUsed = this.resolveFileUrls("image");
+    //   const imagesUnused = [];
+    //   const filesUploaded = this.filesUploaded;
+
+    //   // 找出未使用的文件
+    //   filesUploaded.forEach(file => {
+    //     if (!imagesUsed.includes(file.response.file_path)) {
+    //       imagesUnused.push(file.response);
+    //     }
+    //   });
+
+    //   // 删除未使用文件
+    //   if (imagesUnused.length > 0) {
+    //     try {
+    //       await deleteFile(imagesUnused);
+
+    //       // 去掉已删除的文件
+    //       imagesUnused.forEach(el => {
+    //         const index = filesUploaded.findIndex(
+    //           file => file.response.file_path === el.file_path
+    //         );
+
+    //         index > -1 && filesUploaded.splice(index, 1);
+    //       });
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   }
+    // },
     /**
      * 从 delta 中解析特定类型文件的所有 URL
      * @param {String} 文件类型
@@ -164,15 +194,15 @@ export default {
      *  "/public/bangonglou-c333a1c2957dac5558c4a8cd0c3d04b9.jpg"
      * ]
      */
-    resolveFileUrls(type) {
-      const fileUrls = [];
+    // resolveFileUrls(type) {
+    //   const fileUrls = [];
 
-      this.quill.getContents().ops.forEach(item => {
-        item.insert[type] && fileUrls.push(item.insert[type]);
-      });
+    //   this.quill.getContents().ops.forEach(item => {
+    //     item.insert[type] && fileUrls.push(item.insert[type]);
+    //   });
 
-      return fileUrls;
-    }
+    //   return fileUrls;
+    // }
   }
 };
 </script>

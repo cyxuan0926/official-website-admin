@@ -1,0 +1,6 @@
+// 单行文本溢出隐藏
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

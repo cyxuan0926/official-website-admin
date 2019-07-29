@@ -29,9 +29,6 @@
 
 <script>
 import { Base64 } from "js-base64";
-import { mapActions } from "vuex";
-
-const ACCOUNT_KEY = Base64.encode("account");
 
 export default {
   data() {
@@ -54,10 +51,11 @@ export default {
     this.init();
   },
   methods: {
-    ...mapActions(["user/login"]),
     // 填充账号数据
     init() {
-      const account = localStorage.getItem(ACCOUNT_KEY);
+      const account = localStorage.getItem(
+        this.$store.state.global.ACCOUNT_KEY
+      );
       this.keepAccount = Boolean(account);
 
       if (this.keepAccount) {
@@ -71,15 +69,15 @@ export default {
       await this.$store.dispatch("user/login", { username, password });
       this.keepAccount ? this.storeAccount() : this.removeAccount();
       this.$router.push({
-        name: this.$store.state.routesNameMap.ARTICLE_ALL
+        name: this.$store.state.global.routesNameMap.ARTICLE_ALL
       });
     },
     storeAccount() {
       const account = Base64.encode(JSON.stringify(this.accountForm));
-      localStorage.setItem(ACCOUNT_KEY, account);
+      localStorage.setItem(this.$store.state.global.ACCOUNT_KEY, account);
     },
     removeAccount() {
-      localStorage.removeItem(ACCOUNT_KEY);
+      localStorage.removeItem(this.$store.state.global.ACCOUNT_KEY);
     }
   }
 };

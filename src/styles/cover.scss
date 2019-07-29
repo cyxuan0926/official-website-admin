@@ -1,3 +1,15 @@
+// /* 改变主题色变量 */
+// $--border-color-base: #e6e6e6;
+// $--border-color-light: #d2d2d2;
+
+// $--table-border-color: #ececec;
+
+// /* 改变 icon 字体路径变量，必需 */
+// $--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+// @import "~element-ui/packages/theme-chalk/src/index";
+
+
 #app {
   // elememt-ui
   .el-header {
@@ -15,6 +27,7 @@
   .el-main {
     overflow-y: auto;
     height: calc(100vh - 50px);
+    padding: 36px 56px 60px;
   }
 
   .el-menu-item,
@@ -61,83 +74,50 @@
   }
 
   .ql-container {
-    height: 300px;
+    // min-height: 300px;
 
     + div {
       height: 0;
     }
   }
+  
+  .el-table th.gutter {
+    display: table-cell !important;
+  }
+
+  .el-table colgroup.gutter {
+    display: table-cell !important;
+  }
+
+  .el-table thead th {
+    font-weight: normal;
+    color: #333;
+    background-color: #f5f5f5;
+  }
+
+  .el-table .cell {
+    // overflow: hidden;
+    padding: 0 12px;
+    white-space: nowrap; 
+    // text-overflow: ellipsis;
+  }
+
+  .el-table td {
+    padding: 8px 0;
+  }
+
+  .el-table th {
+    padding: 11px 0;
+  }
 }
 
-#quillPreview {
-  .main {
-    padding-top: 78px;
-  }
-  h2 {
-    margin-bottom: 50px;
-    text-align: center;
-    font-size: 30px;
-  }
-  .article-info {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    height: 42px;
-    margin-top: 30px;
-    border-bottom: 1px solid #ccc;
-    font-size: 18px;
-    color: #999;
-  }
-  .article-info dl {
-    display: -webkit-box;
-    display: flex;
-    margin-right: 30px;
-  }
-  .article-info .operate {
-    -webkit-box-flex: 1;
-    flex: 1;
-    text-align: right;
-  }
-  .article-info .operate span {
-    margin: 0 5px;
-    cursor: pointer;
-  }
-  .article-info .operate span:first-child {
-    cursor: default;
-    margin-left: 8px;
-  }
-  .article-info .operate span:last-child {
-    margin-right: 8px;
-  }
-  .article-info .operate span.active {
-    font-weight: bold;
-    color: #333;
-  }
-  .article-content {
-    padding: 50px 0 60px;
-  }
-  .article-nav {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    padding-top: 26px;
-    margin-bottom: 130px;
-    border-top: 1px solid #ccc;
-    font-size: 18px;
-  }
-  .article-nav .nav-item {
-    max-width: 250px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .article-nav .nav-item a:hover {
-    color: #005dac;
-  }
-  .article-nav .nav-item a.disabled {
-    cursor: default;
-    color: #333;
-  }
+// 顶部加载条样式
+body #nprogress .bar {
+	background: #fff;
+	// height: 3px;
+	// border-radius: 50%;
+}
+
+body #nprogress .peg {
+	box-shadow: 0 0 10px #fff, 0 0 5px #fff;
 }

@@ -1,11 +1,12 @@
 module.exports = {
+  publicPath: "/public",
   configureWebpack: {
     externals: {
       Quill: "Quill"
     }
   },
   devServer: {
-    proxy: "http://localhost:7001"
+    proxy: "http://localhost:7002"
     // proxy: {
     //   "/api": {
     //     target: "http://localhost:7001",

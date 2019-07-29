@@ -10,7 +10,7 @@ instance.interceptors.request.use(
   config => {
     config.headers["x-csrf-token"] = Cookies.get("csrfToken");
     config.headers["Authorization"] =
-      "Bearer " + localStorage.getItem(store.state.TOKEN_KEY);
+      "Bearer " + localStorage.getItem(store.state.global.TOKEN_KEY);
     return config;
   },
   error => Promise.reject(error)
@@ -18,10 +18,12 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   response => {
+    console.log("request success");
     handleResponse(response);
     return response;
   },
   error => {
+    console.log("request error");
     error.response && handleResponse(error.response);
     return Promise.reject(error);
   }
@@ -35,11 +37,11 @@ export function post(url = "", data = {}) {
   return instance.request({ url, method: "POST", data });
 }
 
-export function update(url = "", data = {}) {
-  return instance.request({ url, method: "UPDATE", data });
+export function put(url = "", data = {}) {
+  return instance.request({ url, method: "PUT", data });
 }
 
-export function remove(url = "", data = {}) {
+export function _delete(url = "", data = {}) {
   return instance.request({ url, method: "DELETE", data });
 }
 
@@ -55,11 +57,3 @@ export function postFile(url = "", file) {
     headers: { "content-type": "multipart/form-data" }
   });
 }
-// export function postForm(url = "", data = {}) {
-//   return instance.request({
-//     url,
-//     method: "POST",
-//     data: qs.stringify(data),
-//     headers: { "content-type": "application/x-www-form-urlencoded" }
-//   });
-// }

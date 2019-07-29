@@ -22,10 +22,17 @@ import layoutAside from "./layout-aside";
 
 export default {
   components: { layoutHeader, layoutAside },
-  computed: {
-    // TODO: 刷新登录页闪烁
-    layoutVisible() {
-      return !this.$route.meta.hideLayout;
+  data() {
+    return {
+      layoutVisible: false
+    };
+  },
+  watch: {
+    "$route.meta.layoutVisible": {
+      immediate: true,
+      handler() {
+        this.layoutVisible = this.$route.meta.layoutVisible !== false;
+      }
     }
   }
 };

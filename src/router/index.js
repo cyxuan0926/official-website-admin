@@ -1,34 +1,37 @@
 import Vue from "vue";
 import Router from "vue-router";
+import NProgress from "nprogress";
 import routes from "./routes";
 import store from "@/store";
 
 Vue.use(Router);
+NProgress.configure({ showSpinner: false });
 
 const router = new Router({
-  mode: "history",
+  // mode: "history",
   base: process.env.BASE_URL,
   routes
 });
 
 const whiteList = ["/account", "/account/login"];
 
-// TODO: Nprogress
-
 // 登陆校验
 router.beforeEach((to, from, next) => {
-  console.log("inWhiteList", !whiteList.includes(to.path));
-  console.log("isLoged", localStorage.getItem(store.state.TOKEN_KEY));
+  NProgress.start();
 
   if (!whiteList.includes(to.path)) {
-    if (localStorage.getItem(store.state.TOKEN_KEY)) {
+    if (localStorage.getItem(store.state.global.TOKEN_KEY)) {
       next();
     } else {
-      next({ name: store.state.routesNameMap.LOGIN });
+      next({ name: store.state.global.routesNameMap.LOGIN });
     }
   } else {
     next();
   }
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;

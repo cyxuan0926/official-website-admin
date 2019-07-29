@@ -3,6 +3,11 @@ import routesNameMap from "./routesNameMap";
 
 export default [
   {
+    path: "/",
+    redirect: { name: routesNameMap.ARTICLE_ALL },
+    meta: { isMenu: false }
+  },
+  {
     name: routesNameMap.ACCOUNT,
     path: "/account",
     redirect: { name: routesNameMap.LOGIN },
@@ -13,13 +18,7 @@ export default [
         name: routesNameMap.LOGIN,
         path: "/account/login",
         component: dynamicImport("account/account-login"),
-        meta: { title: "登录", hideLayout: true }
-      },
-      {
-        name: routesNameMap.PASSWORD,
-        path: "/account/password",
-        component: dynamicImport("account/account-password-edit"),
-        meta: { title: "修改密码" }
+        meta: { title: "登录", layoutVisible: false }
       }
     ]
   },
@@ -34,13 +33,21 @@ export default [
         name: routesNameMap.ARTICLE_ALL,
         path: "/article/all",
         component: dynamicImport("article/article-all"),
-        meta: { title: "全部文章" }
+        meta: { title: "全部文章", isMenu: true }
       },
       {
         name: routesNameMap.ARTICLE_CREATE,
         path: "/article/create",
-        component: dynamicImport("article/article-create"),
-        meta: { title: "添加文章" }
+        props: { operate: "CREATE" },
+        component: dynamicImport("article/article-detail"),
+        meta: { title: "添加文章", isMenu: true }
+      },
+      {
+        name: routesNameMap.ARTICLE_UPDATE,
+        path: "/article/:article_id",
+        props: { operate: "UPDATE" },
+        component: dynamicImport("article/article-detail"),
+        meta: { title: "修改文章", isMenu: false }
       }
     ]
   },
@@ -50,4 +57,9 @@ export default [
     component: dynamicImport("contacts/contacts-all"),
     meta: { title: "联系方式管理", icon: "el-icon-mobile-phone", isMenu: true }
   }
+  // {
+  //   path: "*",
+  //   redirect: { name: routesNameMap.ARTICLE_ALL },
+  //   meta: { isMenu: false }
+  // }
 ];
