@@ -1,10 +1,12 @@
-// import { deepCopy } from "@/common/helper";
+import { deepCopy } from "@/common/helper";
 import { articleMutationTypes } from "./mutation-types";
 import { getArticles, getArticleTypes } from "@/services/api/articles";
+import { deleteFiles } from "@/services/api/files";
 
 const state = {
   articles: [],
-  articleTypes: []
+  articleTypes: [],
+  filesToDelete: []
 };
 
 const mutations = {
@@ -14,6 +16,9 @@ const mutations = {
   },
   [articleMutationTypes.SET_ARTICLE_TYPES]: (state, articleTypes) => {
     state.articleTypes = articleTypes;
+  },
+  [articleMutationTypes.SET_FILES_TO_DELETE]: (state, files) => {
+    state.filesToDelete = files;
   }
 };
 
@@ -34,6 +39,25 @@ const actions = {
       return res.data;
     } catch (err) {
       throw err;
+    }
+  },
+  addFileToDelete: ({ commit, state }, file) => {
+    const filesToDelete = deepCopy(state.filesToDelete);
+    filesToDelete.push(file);
+    commit(articleMutationTypes.SET_FILES_TO_DELETE, filesToDelete);
+  },
+  clearFilesToDelete: ({ commit }) => {
+    commit(articleMutationTypes.SET_FILES_TO_DELETE, []);
+  },
+  deleteFilesUnused: async ({ dispatch, state }) => {
+    if (state.filesToDelete.length > 0) {
+      try {
+        await deleteFiles(state.filesToDelete);
+        dispatch("clearFilesToDelete");
+        return true;
+      } catch (err) {
+        throw err;
+      }
     }
   }
   // updateArticle: async ({ dispatch }, { article_id, data }) => {

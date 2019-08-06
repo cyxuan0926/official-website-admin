@@ -4,6 +4,7 @@ export function uploadFile(file) {
   return postFile("/files", file);
 }
 
-export function deleteFile(file_path) {
-  return _delete(`/files/${encodeURIComponent(file_path)}`);
+export function deleteFiles(files) {
+  return _delete("/files", files);
+  // return _delete(`/files/${encodeURIComponent(file_path)}`);
 }

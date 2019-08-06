@@ -1,13 +1,12 @@
 import { Base64 } from "js-base64";
 import routesNameMap from "@/router/routesNameMap";
-import mutationTypes, { globalMutationTypes } from "./mutation-types";
+import { globalMutationTypes } from "./mutation-types";
 
 const state = {
   TOKEN_KEY: Base64.encode("TOKEN"),
   ACCOUNT_KEY: Base64.encode("ACCOUNT"),
-  routesNameMap,
-  mutationTypes,
-  menuVisible: false // 是否收起菜单
+  menuVisible: false, // 是否收起菜单
+  routesNameMap
 };
 
 const mutations = {
@@ -16,6 +15,10 @@ const mutations = {
   }
 };
 
-const actions = {};
+const actions = {
+  toggleMenuVisible: ({ commit, state }) => {
+    commit(globalMutationTypes.SET_MENU_COLLAPSE, !state.menuVisible);
+  }
+};
 
 export default { namespaced: true, state, mutations, actions };

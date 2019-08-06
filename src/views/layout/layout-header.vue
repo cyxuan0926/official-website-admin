@@ -2,7 +2,7 @@
   <div class="layout-header">
     <div class="fold">
       <h1>国科官网后台管理</h1>
-      <i class="el-icon-s-operation" @click="toggleMenuVisible"></i>
+      <!-- <i class="el-icon-s-operation" @click="toggleMenuVisible"></i> -->
     </div>
     <div class="user">
       <h2>
@@ -137,10 +137,7 @@ export default {
       }
     },
     toggleMenuVisible() {
-      this.$store.commit(
-        this.$store.state.global.mutationTypes.SET_MENU_COLLAPSE,
-        !this.$store.state.global.menuVisible
-      );
+      this.$store.dispatch("global/toggleMenuVisible");
     }
   }
 };

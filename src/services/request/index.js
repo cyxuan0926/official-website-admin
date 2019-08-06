@@ -18,12 +18,10 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   response => {
-    console.log("request success");
     handleResponse(response);
     return response;
   },
   error => {
-    console.log("request error");
     error.response && handleResponse(error.response);
     return Promise.reject(error);
   }

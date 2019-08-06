@@ -6,20 +6,6 @@ module.exports = {
     }
   },
   devServer: {
-    proxy: "http://localhost:7002"
-    // proxy: {
-    //   "/api": {
-    //     target: "http://localhost:7001",
-    //     bypass: function(req) {
-    //       console.log("bypass2", req.url, req.method);
-    //     }
-    //   },
-    //   "/public": {
-    //     target: "http://localhost:7001",
-    //     bypass: function(req) {
-    //       console.log("bypass3", req.url, req.method);
-    //     }
-    //   }
-    // }
+    proxy: "http://localhost:8002"
   }
 };

@@ -108,12 +108,13 @@ export default {
         contact_tel: "",
         contact_region: ""
       };
-      this.$refs.contactForm.resetFields();
+      this.$refs.contactForm && this.$refs.contactForm.resetFields();
       this.contactDialogVisible = true;
     },
     onUpdateContact(contact) {
       this.operate = "UPDATE";
-      this.contactForm = contact;
+      this.contactForm = deepCopy(contact);
+      // this.contactForm = contact;
       this.contactDialogVisible = true;
     },
     async onDeleteContact(contact_id) {

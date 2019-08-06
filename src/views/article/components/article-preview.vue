@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/mixins.scss";
+@import "../../../styles/mixins.scss";
 
 .main {
   width: 1200px;
@@ -145,7 +145,6 @@ export default {
 
       &.active {
         font-weight: bold;
-        // color: $text-color-default;
       }
     }
   }

@@ -275,11 +275,9 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         });
-        // await this.$store.dispatch("article/updateArticleBatch", articles);
         await updateArticleBatch(articles);
         const { page_num, page_size } = this.pagination;
         this.getArticles({ page_num, page_size });
-        this.getArticles();
       } catch (err) {
         console.log(err);
       }

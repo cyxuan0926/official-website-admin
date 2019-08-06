@@ -33,16 +33,16 @@ const errorHandlers = {
   500: () => tip("服务器内部错误")
 };
 
-const successHandler = res => {
-  // TODO
-  console.log("successHandler", res);
-};
+// const successHandler = res => {
+//   // TODO
+//   console.log("successHandler", res);
+// };
 
 const success = status => /^2/.test(status);
 
 export default res => {
   if (success(res.status)) {
-    successHandler(res);
+    // successHandler(res);
   } else {
     const handler = errorHandlers[res.status];
     handler && handler(res);

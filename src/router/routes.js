@@ -38,15 +38,15 @@ export default [
       {
         name: routesNameMap.ARTICLE_CREATE,
         path: "/article/create",
-        props: { operate: "CREATE" },
-        component: dynamicImport("article/article-detail"),
+        // props: { operate: "CREATE" },
+        component: dynamicImport("article/article-create"),
         meta: { title: "添加文章", isMenu: true }
       },
       {
         name: routesNameMap.ARTICLE_UPDATE,
         path: "/article/:article_id",
-        props: { operate: "UPDATE" },
-        component: dynamicImport("article/article-detail"),
+        // props: { operate: "UPDATE" },
+        component: dynamicImport("article/article-update"),
         meta: { title: "修改文章", isMenu: false }
       }
     ]

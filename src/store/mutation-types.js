@@ -8,7 +8,8 @@ const userMutationTypes = {
 
 const articleMutationTypes = {
   SET_ARTICLES: "SET_ARTICLES",
-  SET_ARTICLE_TYPES: "SET_ARTICLE_TYPES"
+  SET_ARTICLE_TYPES: "SET_ARTICLE_TYPES",
+  SET_FILES_TO_DELETE: "SET_FILES_TO_DELETE"
 };
 
 const contactsMutationTypes = {
