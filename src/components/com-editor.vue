@@ -91,13 +91,8 @@ export default {
       this.rewriteHandler();
     },
     bindEvent() {
-      this.quill.on("text-change", () => {
-        const html = this.$refs.editor.children[0].innerHTML;
-        this.content = this.quill.getLength() === 1 ? "" : html;
-        this.deleteUnusedImages(this.quill.getContents(), this.contentObj);
-        this.contentObj = this.quill.getContents();
-        this.$emit("input", this.content);
-      });
+      this.quill.on("text-change", this.storeContent);
+      this.$refs.editor.addEventListener("click", this.storeContent);
     },
     // 自定义 handler
     rewriteHandler() {
@@ -149,6 +144,13 @@ export default {
       });
 
       return images;
+    },
+    storeContent() {
+      const html = this.$refs.editor.children[0].innerHTML;
+      this.content = this.quill.getLength() === 1 ? "" : html;
+      this.deleteUnusedImages(this.quill.getContents(), this.contentObj);
+      this.contentObj = this.quill.getContents();
+      this.$emit("input", this.content);
     }
   }
 };
