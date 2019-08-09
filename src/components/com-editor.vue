@@ -110,11 +110,10 @@ export default {
         file.percentage = 100;
         file.response = res.data;
 
-        this.quill.insertEmbed(
-          this.quill.getLength(),
-          "image",
-          res.data.file_path
-        );
+        const position = this.quill.getSelection()
+          ? this.quill.getSelection().index
+          : 0;
+        this.quill.insertEmbed(position, "image", res.data.file_path);
       }, 0);
     },
     async deleteUnusedImages(content, oldContent) {
